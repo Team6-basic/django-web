@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<body style="overflow:hidden">
+    <div class=container>
+      <div class=logo_wrap>
+        <div class=logo_image></div>
+        <span class=logo_text>희망참</span>
+      </div>
+  
+      <div class=wrapper>
+        <span class=Login>Login</span>
+        <div class=Line></div>
+        <!--input-->
+        <form>
+          <input type="text" id="ID" class=inputcont style="border: none;" placeholder="ID를 적어주세요.">
+          <input type="text" id="PW" class=inputcont style="border: none;" placeholder="비밀번호를 적어주세요.">
+          <input type="submit" value="Login" style="border: none;">
+        </form>
+      </div>
+    </div>
+  
+</body>
+{% endblock %}

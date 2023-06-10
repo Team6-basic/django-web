@@ -1,0 +1,31 @@
+{% load static %}
+<!doctype html>
+<html lang= "ko" >
+<head>
+
+  <meta charset="utf-8">
+
+  <title>희망참</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}?after">
+
+</head> 
+<body>
+  <!-- 기본 템플릿 안에 삽입될 내용 Start -->
+  {% block content %}
+  {% endblock %}
+  <!-- 기본 템플릿 안에 삽입될 내용 End -->
+  <!-- jQuery JS -->
+  {% comment %} <script src="{% static 'jquery-3.4.1.min.js' %}"></script>
+  <!-- Bootstrap JS -->
+  <script src="{% static 'bootstrap.min.js' %}"></script> {% endcomment %}
+  <!-- 자바스크립트 Start -->
+  {% block script %}
+  {% endblock %}
+  <!-- 자바스크립트 End -->
+</body>
+</html> 

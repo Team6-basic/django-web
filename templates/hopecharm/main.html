@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load hopecharm_filter %}
+{% block content %}
+<body>
+  <nav class="navbar">
+    <div class="navwrap">
+      <div class="nav_logo_wrap">
+        <div class="nav_logo_image"></div>
+        <span class="nav_logo_text">희망참</span>
+      </div>
+
+      <div class="nav_login">
+        <ul>
+          <li class="nav-item ">
+            {% if user.is_authenticated %}
+            <a class="nav-link" href="{% url 'common:logout' %}">{{ user.username }} (로그아웃)</a>
+            {% else %}
+            <a class="nav-link" href="{% url 'common:login'  %}">로그인</a>
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="vis_wrap">
+      <div class="user_text">
+        {% if user.is_authenticated %}
+        <span href="{% url 'common:logout' %}">{{ user.username }}님의 학급은 아래와 같은 언어환경에 있습니다.</span>
+        {% else %}
+        <span href="{% url 'common:login'  %}">로그인 후 이용해주세요.</span>
+        {% endif %}
+      </div>
+      <!-- 데이터 시각화 -->
+      <div class="data_vis" id="vis1">
+
+      </div>
+      <div class="data_vis" id="vis2">
+
+      </div>
+    </div>
+    <!-- 일별 녹음본 -->
+    <div class="day_wrap">
+      <!-- 제목 -->
+      <div class="title">
+        <span id="list">🗓️ 날짜별로 언어환경 확인하기</span>
+      </div>
+      <!-- 일별 데이터 -->
+      <div class="content">
+        {% if user.is_authenticated %}
+        <div class="card">
+          <div class="cal">
+            <div id="year">2023</div>
+            <div id="date">06-08</div>
+          </div>
+          <!-- 일자별 Detail 팝업버튼 -->
+          <span id="modal_btn">add_box</span>
+        </div>
+        <div class=card></div>
+        <div class=card></div>
+        <div class=card></div>
+        <div class=card></div>
+        {% else %}
+        <div class="card">
+          <span>로그인 후 이용해주세요.</span>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- model id 속성 추가 : 일자별 데이터가 들어갈 창입니다! -->
+  <div id="modal_add_feed" class="modal_overlay">
+    <div class="modal_window">
+      <div class="modal_title">
+        <div class="modal_title_side"></div>
+        <div> 새 게시물 </div>
+        <div class="modal_title_side">
+          <span id="close_modal" class="material-icons-outlined">
+            close
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock  %}
+{% block script %}
+<script>
+  // 모달 띄우기 코드
+  const modal = document.getElementById("modal_add_feed");
+  const buttonAddFeed = document.getElementById("modal_btn");
+  buttonAddFeed.addEventListener("click", e => {
+    modal.style.display = "flex";
+    document.body.style.overflowY = "hidden"; // 스크롤 없애기
+  });
+
+  // 모달 닫기 코드
+  const buttonCloseModal = document.getElementById("close_modal");
+  buttonCloseModal.addEventListener("click", e => {
+    modal.style.display = "none";
+    document.body.style.overflowY = "visible";
+  });
+
+</script>
+{% endblock %}
