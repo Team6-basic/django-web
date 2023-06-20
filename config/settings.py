@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",  # engine: mysql
-        "NAME": "testdb",  # DB Name
+        "NAME": "mariadb",  # DB Name
         "USER": "admin",  # DB User
         "PASSWORD": "Passw0rd",  # Password
         "HOST": "basic-rds-mariadb.chr1ojp8pl0h.eu-west-3.rds.amazonaws.com",  # 생성한 데이터베이스 엔드포인트
