@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-*%7v9*zc)mj-5=yxi7wwzlm9+9*#m0w0iepxb-iek9sfd&m!29
 DEBUG = True
 
 ALLOWED_HOSTS = ['hopecharm.net']
-
+ALLOWED_CIDR_NETS = ['192.168.96.0/19','192.168.128.0/19','192.168.160.0/19']
 #로그인 로그아웃 성공 시 자동으로 이동할 URL
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
@@ -42,10 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'hopecharm.apps.HopecharmConfig',
     'common.apps.CommonConfig',
-    'ebhealthcheck.apps.EBHealthCheckConfig',
 ]
 
 MIDDLEWARE = [
+    'allow_cidr.middleware.AllowCIDRMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
