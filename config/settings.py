@@ -23,12 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-*%7v9*zc)mj-5=yxi7wwzlm9+9*#m0w0iepxb-iek9sfd&m!29'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['hopecharm.net']
 ALLOWED_CIDR_NETS = ['192.168.96.0/19','192.168.128.0/19','192.168.160.0/19']
+CSRF_TRUSTED_ORIGINS = ['https://hopecharm.net']
+
 #로그인 로그아웃 성공 시 자동으로 이동할 URL
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/hopecharm/'
 LOGOUT_REDIRECT_URL = '/'
 
 # Application definition
@@ -40,8 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hopecharm.apps.HopecharmConfig',
-    'common.apps.CommonConfig',
+    'hopecharm',
 ]
 
 MIDDLEWARE = [
