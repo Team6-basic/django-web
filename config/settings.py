@@ -25,8 +25,8 @@ SECRET_KEY = 'django-insecure-*%7v9*zc)mj-5=yxi7wwzlm9+9*#m0w0iepxb-iek9sfd&m!29
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost']
-
+ALLOWED_HOSTS = ['hopecharm.net']
+ALLOWED_CIDR_NETS = ['192.168.96.0/19','192.168.128.0/19','192.168.160.0/19']
 #로그인 로그아웃 성공 시 자동으로 이동할 URL
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'allow_cidr.middleware.AllowCIDRMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -79,12 +80,16 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.mysql",  # engine: mysql
+        "NAME": "mariadb",  # DB Name
+        "USER": "admin",  # DB User
+        "PASSWORD": "Passw0rd",  # Password
+        "HOST": "basic-rds-mariadb.chr1ojp8pl0h.eu-west-3.rds.amazonaws.com",  # 생성한 데이터베이스 엔드포인트
+        "PORT": "3306",  # 데이터베이스 포트
+        "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
