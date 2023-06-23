@@ -4,5 +4,5 @@ app_name = 'hopecharm'
 
 urlpatterns = [
     path('',views.index, name='index'), #config/urls -> matjipmrk/urls -> matjipmrk/views.py 실행!
-    path('<int:board_id>/', views.detail, name='detail'),
+    path('<int:board_id>/detail/', views.detail, name='detail'),
 ]
