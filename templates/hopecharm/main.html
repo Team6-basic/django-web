@@ -36,7 +36,6 @@
       <div class="data_vis" id="vis1">  
         <div class="graph_wrap">         
           <div id="schl_viol">
-            <h3>학교폭력 유형 비율</h3>
           </div>
           <div id="kor_viol">
             <h3>국내 혐오표현 현항</h3>
@@ -45,10 +44,26 @@
       </div>
       
       <div class="data_vis" id="vis2">
+      </div>
 
-      </div>
-      
-      </div>
+      <script type="module">
+        var schl_viol = document.getElementsById('schl_viol') 
+        import "https://cdn.plot.ly/plotly-2.24.2.min.js"
+        {% comment %} 시계열그래프 그리기  {% endcomment %}
+        data = {{vis1}};
+        var trace1 = {x:data.index, y:data['언어폭력'], name:'언어폭력',mode:'lines'};
+        var trace2 = {x:data.index, y:data['집단따돌림'], name:'집단따돌림',mode:'lines'};
+        var trace3 = {x:data.index, y:data['스토킹'], name:'스토킹',mode:'lines'};
+        var trace4 = {x:data.index, y:data['사이버폭력'], name:'사이버폭력',mode:'lines'};
+        var trace5 = {x:data.index, y:data['금품갈취'], name:'금품갈취',mode:'lines'};
+        var trace6 = {x:data.index, y:data['성폭력'], name:'성폭력',mode:'lines'};
+        var trace7 = {x:data.index, y:data['강요'], name:'강요',mode:'lines'};
+        var schviol =  [trace1, trace2, trace3, trace4, trace5, trace6, trace7];
+        var layout = {
+          title: '국내 학교폭력 유형 현황'
+        };
+        Plotly.newPlot(schl_viol, schviol, layout);
+      </script>
 
     <!-- 일별 녹음본 -->
     <div class="day_wrap">

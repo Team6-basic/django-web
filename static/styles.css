@@ -472,10 +472,12 @@ ul.pagination{
 #schl_viol{
 	position:relative;
 	display:inline-block;
+	align-items: center;
 	width:60%;
 }
 #kor_viol{
 	position:relative;
 	display:inline-block;
+	align-items: center;
 	width:40%
 }
