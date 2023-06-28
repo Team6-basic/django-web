@@ -1,12 +1,11 @@
-# Create your views here.
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.utils import timezone
+from django.shortcuts import render
 import pandas as pd
 import numpy as np
-from django.views import View
 from django.core.paginator import Paginator
+from django.views import View
 from .models import Day_Hate, Time_Hate
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 # Create your views here.
 def index(request):
@@ -23,7 +22,8 @@ def index(request):
         indicators.append({ 'id':obj.id, 'toxic':np.mean(data_df[11]) })
     
     #메인페이지 국내 혐오표현 현황 그래프
-    vis1 = pd.DataFrame(pd.read_csv("hopecharm\data\schoolviolence.csv", header=1)).transpose()
+    vis1 = pd.DataFrame(pd.read_csv("hopecharm\data\schoolviolence.csv"))
+  
 
     context = { 'board_list':page_obj,
                 'indicator':indicators,
