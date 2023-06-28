@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-*%7v9*zc)mj-5=yxi7wwzlm9+9*#m0w0iepxb-iek9sfd&m!29
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["hopecharm.net", "0.0.0.0"]
+ALLOWED_HOSTS = ["hopecharm.net", "127.0.0.1"]
 ALLOWED_CIDR_NETS = ["192.168.96.0/19", "192.168.128.0/19", "192.168.160.0/19"]
 CSRF_TRUSTED_ORIGINS = ["https://hopecharm.net"]
 # 로그인 로그아웃 성공 시 자동으로 이동할 URL
