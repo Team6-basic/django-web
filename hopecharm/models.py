@@ -1,22 +1,16 @@
 from django.db import models
 
 
-class Device(models.Model):
-    id = models.AutoField(primary_key=True)
-    user_id = models.IntegerField()
-    rp_serial = models.CharField(max_length=30)
-
-
 class Day_Hate(models.Model):
     id = models.AutoField(primary_key=True)
     rec_date = models.DateField()
-    user_id = models.IntegerField(null=False)
+    user_id = models.IntegerField()
 
 
 class Time_Hate(models.Model):
     id = models.AutoField(primary_key=True)
     rec_datetime = models.DateTimeField()
-    user_id = models.IntegerField(null=False)
+    user_id = models.IntegerField()
     fg_none = models.FloatField()
     fg_other_hate = models.FloatField()
     fg_man = models.FloatField()
@@ -28,4 +22,3 @@ class Time_Hate(models.Model):
     fg_religion = models.FloatField()
     fg_region = models.FloatField()
     speech = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
