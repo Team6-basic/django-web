@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 {% load hopecharm_filter %}
 {% block content %}
-<body>
   <nav class="navbar">
     <div class="navwrap">
-      <div class="nav_logo_wrap">
+      <div class="nav_logo_wrap" href="{% url 'hopecharm:index' %}">
         <div class="nav_logo_image"></div>
         <span class="nav_logo_text">희망참</span>
       </div>
@@ -13,94 +12,317 @@
         <ul>
           <li class="nav-item ">
             {% if user.is_authenticated %}
-            <a class="nav-link" href="{% url 'common:logout' %}">{{ user.username }} (로그아웃)</a>
+            <a class="nav-link" href="{% url 'logout' %}">{{ user.username }} (로그아웃)</a>
             {% else %}
-            <a class="nav-link" href="{% url 'common:login'  %}">로그인</a>
+            <a class="nav-link" href="{% url 'login'  %}">로그인</a>
             {% endif %}
           </li>
         </ul>
       </div>
     </div>
   </nav>
+
   <div class="container">
+    <!-- main -->
     <div class="vis_wrap">
       <div class="user_text">
         {% if user.is_authenticated %}
-        <span href="{% url 'common:logout' %}">{{ user.username }}님의 학급은 아래와 같은 언어환경에 있습니다.</span>
+        <span href="{% url 'logout' %}">국내 혐오표현 지표 현황은 다음과 같습니다.</span>
         {% else %}
-        <span href="{% url 'common:login'  %}">로그인 후 이용해주세요.</span>
+        <span href="{% url 'login'  %}">로그인 후 이용해주세요.</span>
         {% endif %}
       </div>
       <!-- 데이터 시각화 -->
-      <div class="data_vis" id="vis1">
+      <!-- 위 데이터행-->
+      <div class="data_vis" id="vis1">  
+        <div class="graph_wrap">
+          <div id='mc'><canvas id="myChart"></canvas></div>         
+          <div id='mc2'><canvas id="myChart2"></canvas></div>
+        </div>
+      </div>
+      <!-- vis1 chart.js -->
+      <script>
+        const datas = {{monthly_df}};
+        $(function () {
+            var ctx = document.getElementById("myChart").getContext('2d');
+            var data = {
+              label:'월간 혐오표현 유형별 통계',
+                datasets: [{
+                    data: [datas[0][2], datas[1][3], datas[2][4], datas[3][5], datas[4][6], datas[5][7],
+                    datas[6][8], datas[7][9], datas[8][10]],
+                    backgroundColor: ['#3c8dbc','#f39c12','#dfaebd','#434343','#33115c',
+                    '#226d1f','#069583','#95c798','#f56954'],
+                }],
+                labels: ["여성/가족", "남성", "성소수자", "인종/국적", "연령", "지역", "종교", "기타혐오", "악플/욕설"]
+            };
+            var mypieChart = new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: {
+                  layout:{padding:20},
+                    responsive: false,
+                    maintainAspectRatio: false,
+                    plugins:{
+                      title:{display:true,text:'월간 혐오표현 유형별 통계'},
+                      legend:{
+                        labels:{
+                          boxWidth:40,
+                          boxHeight:5,
+                        }
+                      }
+                    },
 
-      </div>
-      <div class="data_vis" id="vis2">
+                }
+            });
 
-      </div>
-    </div>
-    <!-- 일별 녹음본 -->
-    <div class="day_wrap">
-      <!-- 제목 -->
-      <div class="title">
-        <span id="list">🗓️ 날짜별로 언어환경 확인하기</span>
-      </div>
-      <!-- 일별 데이터 -->
-      <div class="content">
-        {% if user.is_authenticated %}
-        <div class="card">
-          <div class="cal">
-            <div id="year">2023</div>
-            <div id="date">06-08</div>
+            var ctx_2 = document.getElementById("myChart2");
+            var data_2 = {
+              datasets: [{
+                label:'혐오표현 상황별 통계',
+                data: [{x:46.7, y:'오프라인(정규수업, 방과후 수업 등)'},
+                {x:35.5, y:'온라인(SNS, 게임, 단톡방 등)'},
+                {x:17.8, y:'기타(친구들과 만남, 쉬는 시간 등)'}],
+                backgroundColor: ['#3c8dbc','#f56954','#f39c12'],
+              }]
+            };
+            var mybarChart_2 = new Chart(ctx_2, {
+                type: 'bar',
+                data: data_2,
+                options: {
+                  layout:{padding:20},
+                  indexAxis:'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins:{
+                      title:{display:true,text:'혐오표현 사용 상황별 통계'},
+                      legend:{
+                        labels:{
+                          display:false
+                        }
+                      }
+                    },
+                    scales:{
+                      x:{
+                        ticks:{
+                          callback:function(value,index,ticks){
+                            return value + '%';
+                          }
+                        }
+                      },
+                      y:{
+                        ticks:{
+                          callback:function(value,index,ticks){
+                            const bar_key=['오프라인','온라인','기타']
+                            return bar_key[index];
+                          }
+                        }
+                      }
+                    }
+                }
+            });
+        });
+
+    </script>
+
+      <!-- 밑에 데이터행-->
+    <div class="data_vis" id="vis2">
+      
+      <!-- 뉴스 -->
+      <div id="news_wrap">
+        <div class="outer" >
+          <div class="inner-list">
+            <div class="inner">
+            <h2>first...</h2>
+            </div>
+            <div class="inner">
+              <h2>second...</h2>
+            </div>
+            <div class="inner">
+              <h2>third...</h2>
+            </div>
           </div>
-          <!-- 일자별 Detail 팝업버튼 -->
-          <span id="modal_btn">add_box</span>
         </div>
-        <div class=card></div>
-        <div class=card></div>
-        <div class=card></div>
-        <div class=card></div>
+        <div class="button-list">
+          <button class="button-left">이전</button>
+          <button class="button-right">다음</button>
+        </div>
+      </div>
+      <!-- 슬라이드 뉴스 배너-->
+      <script>
+      {% comment %} div사이즈 동적으로 구하기 {% endcomment %}
+        const outer = document.querySelector('.outer');
+        const innerList = document.querySelector('.inner-list');
+        const inners = document.querySelectorAll('.inner');
+        let currentIndex = 0; // 현재 슬라이드 화면 인덱스
+
+        inners.forEach((inner) => {
+          inner.style.width = `${outer.clientWidth}px`; // inner의 width를 모두 outer의 width로 만들기
+        })
+
+        innerList.style.width = `${outer.clientWidth * inners.length}px`; // innerList의 width를 inner의 width * inner의 개수로 만들기
+
+        /*
+          버튼에 이벤트 등록하기
+        */
+        const buttonLeft = document.querySelector('.button-left');
+        const buttonRight = document.querySelector('.button-right');
+
+        buttonLeft.addEventListener('click', () => {
+          currentIndex--;
+          currentIndex = currentIndex < 0 ? 0 : currentIndex; // index값이 0보다 작아질 경우 0으로 변경
+          innerList.style.marginLeft = `-${outer.clientWidth * currentIndex}px`; // index만큼 margin을 주어 옆으로 밀기
+        });
+
+        buttonRight.addEventListener('click', () => {
+          currentIndex++;
+          currentIndex = currentIndex >= inners.length ? inners.length - 1 : currentIndex; // index값이 inner의 총 개수보다 많아질 경우 마지막 인덱스값으로 변경
+          innerList.style.marginLeft = `-${outer.clientWidth * currentIndex}px`; // index만큼 margin을 주어 옆으로 밀기
+        });
+      </script>
+
+      <!--상관계수-->  
+      <div id="stats_wrap">
+        <div class='relation' > 
+        <div id="statitle">
+          <span>혐오표현 유형 간 상관계수 Top5</span>
+        </div>
+        <table>
+          <tr class='rel'>
+            <td>연령 / 지역</td>
+            <td>0.857</td>
+          </tr>
+          <tr class='rel'>
+            <td>여성,가족 / 기타혐오</td>
+            <td>0.78</td>
+          </tr>
+          <tr class='rel'>
+            <td>지역 / 남성</td>
+            <td>0.774</td>
+          </tr>
+          <tr class='rel'> 
+            <td>종교 / 지역</td>
+            <td>0.728</td>
+          </tr>
+          <tr class='rel'>
+            <td>단순 악플 / 인종/국적</td>
+            <td>0.718</td>
+          </tr>
+        </table>
+      </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 일별 녹음본 -->
+  <div class="day_wrap">
+    <!-- 제목 -->
+    <div class="title">
+      <span id="list">🗓️ 날짜별로 언어환경 확인하기</span>
+    </div>
+
+    <!-- 일별 데이터 -->
+    <div class="content">
+      <table>
+        <tbody>
+        {% if board_list %}
+        {% for board in board_list %}
+          <tr class="card">
+            <th>
+            <div class="cal">
+              <div id="year">{{ board.rec_date | date:'Y' }}</div>
+              <div id="date">{{ board.rec_date | date:'m-d' }}</div>
+            </div>
+            </th>
+            <td>
+            </td>
+            <td><!-- 일자별 Detail 팝업버튼 -->
+            <a href="{% url 'hopecharm:detail' board.id %}">일별 통계 확인</a>
+            </td>
+            {% for indc in indicator %}
+            {% if indc|reportkey:"id" == board.id  %}
+            <td><a class="toxicity"> {{ indc|reportkey:"toxic" }}</a>
+              <img class="tox_image" alt="indicate" src="../static/images/green.png"/>
+            </td>
+            {% endif %}{% endfor %}
+            <td>{{ board_list.paginator.count|sub:board_list.start_index|sub:forloop.counter0|add:1 }}</td>
+          </tr>
+        {% endfor %}
         {% else %}
-        <div class="card">
-          <span>로그인 후 이용해주세요.</span>
-        </div>
+        <tr>
+          <td>수집된 언어환경이 없습니다.</td>
+        </tr>
         {% endif %}
-      </div>
-    </div>
-  </div>
+        </tbody>
+      </table>
 
-  <!-- model id 속성 추가 : 일자별 데이터가 들어갈 창입니다! -->
-  <div id="modal_add_feed" class="modal_overlay">
-    <div class="modal_window">
-      <div class="modal_title">
-        <div class="modal_title_side"></div>
-        <div> 새 게시물 </div>
-        <div class="modal_title_side">
-          <span id="close_modal" class="material-icons-outlined">
-            close
-          </span>
+      <div>
+          <span>
+            <!-- 페이징처리 시작 -->
+          <ul class ="pagination">
+            <!-- 이전페이지 -->
+            {% if board_list.has_previous %}
+            <li class="page-item">
+                <a class="page-link" data-page="{{ board_list.previous_page_number }}" href="#">이전</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+            </li>
+            {% endif %}
+            <!-- 페이지리스트 -->
+            {% for page_number in board_list.paginator.page_range %}
+            {% if page_number >= board_list.number|add:-6 and page_number <= board_list.number|add:6 %}
+                {% if page_number == board_list.number %}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+                </li>
+                {% endif %}
+            {% endif %}
+            {% endfor %}
+            <!-- 다음페이지 -->
+            {% if board_list.has_next %}
+            <li class="page-item">
+                <a class="page-link" data-page="{{ board_list.next_page_number }}" href="#">다음</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+            </li>
+            {% endif %}
+        </ul></span>
         </div>
-      </div>
-    </div>
-  </div>
-</body>
-{% endblock  %}
-{% block script %}
-<script>
-  // 모달 띄우기 코드
-  const modal = document.getElementById("modal_add_feed");
-  const buttonAddFeed = document.getElementById("modal_btn");
-  buttonAddFeed.addEventListener("click", e => {
-    modal.style.display = "flex";
-    document.body.style.overflowY = "hidden"; // 스크롤 없애기
-  });
+        <!-- 페이징처리 끝 -->
+    </div> <!-- 일별처리 끝 -->
 
-  // 모달 닫기 코드
-  const buttonCloseModal = document.getElementById("close_modal");
-  buttonCloseModal.addEventListener("click", e => {
-    modal.style.display = "none";
-    document.body.style.overflowY = "visible";
-  });
-
+  </div> <!-- 컨테이너 끝 --> 
+<!-- 계정별 연동 허용 -->
+<script src="https://code.jquery.com/jquery-3.4.1.js">  
+  $.ajaxSetup({
+    headers: { "X-CSRFToken": '{{csrf_token}}' }
+  })
 </script>
-{% endblock %}
+<script type="text/javascript">
+  
+  var indicator = document.getElementsByClassName("toxicity");
+  var toxic_image = document.getElementsByClassName("tox_image");
+  {% comment %} 이미지 정보와 기준 값 추출 추출 {% endcomment %}
+  for (var i = 0; i < indicator.length; i++) {
+    var ind = indicator[i];
+    var img = toxic_image[i];
+    if (ind.text >= 0.93) {
+      img.src = "../static/images/green.png"
+    } else if (ind.text >= 0.90) {
+      img.src = "../static/images/orange.png"
+    } else if (ind.text < 0.87) {
+      img.src = "../static/images/red.png"
+    }
+  }
+</script>
+
+{% endblock  %}
+

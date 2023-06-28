@@ -1,24 +1,29 @@
-# Create your models here.
 from django.db import models
+from django.db.models import Avg, Count, Min, Sum
+from django.conf import settings
 
-# Create your models here.
 class Day_Hate(models.Model):
     rec_date = models.DateField()
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.rec_date}, {self.user}"
 
 class Time_Hate(models.Model):
-    rec_day = models.ForeignKey(Day_Hate, on_delete=models.CASCADE) 
-    # 상위 분류인 Day_Hate 의 날짜가 지워지면 아래 시간별 분류인 Time_Hate도 삭제되도록!
+    create_time = models.DateTimeField(null=True)
+    label1 = models.FloatField(blank=True, null=True, verbose_name="여성/가족")
+    label2 = models.FloatField(blank=True, null=True, verbose_name="남성")
+    label3 = models.FloatField(blank=True, null=True, verbose_name="성소수자")
+    label4 = models.FloatField(blank=True, null=True, verbose_name="인종/국적")
+    label5 = models.FloatField(blank=True, null=True, verbose_name="연령")
+    label6 = models.FloatField(blank=True, null=True, verbose_name="지역")
+    label7 = models.FloatField(blank=True, null=True, verbose_name="종교")
+    label8 = models.FloatField(blank=True, null=True, verbose_name="기타혐오")
+    label9 = models.FloatField(blank=True, null=True, verbose_name="악플/욕설")
+    label10 = models.FloatField(blank=True, null=True, verbose_name="clean")
 
-    create_time = models.DateTimeField()
-    label1 = models.IntegerField(verbose_name="여성/가족")
-    label2 = models.IntegerField(verbose_name="남성")
-    label3 = models.IntegerField(verbose_name="성소수자")
-    label4 = models.IntegerField(verbose_name="인종/국적")
-    label5 = models.IntegerField(verbose_name="연령")
-    label6 = models.IntegerField(verbose_name="지역")
-    label7 = models.IntegerField(verbose_name="종교")
-    label8 = models.IntegerField(verbose_name="기타혐오")
-    label9 = models.IntegerField(verbose_name="악플/욕설")
-    label10 = models.IntegerField(verbose_name="clean")
+    rec_day = models.ForeignKey(Day_Hate, on_delete=models.CASCADE)
 
-# pd.date_range('2019-11-25 09:00:00', '2019-11-25 16:00:00', freq='10min')
+
+    def __str__(self):
+        return f"{self.rec_day}, {self.create_time}"

@@ -20,15 +20,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*%7v9*zc)mj-5=yxi7wwzlm9+9*#m0w0iepxb-iek9sfd&m!29'
+SECRET_KEY = 'django-insecure-^4z+cdy4@kw5f%@-rh2xk(n=l)l)e)#2&)9h56j6rn#83=$g@@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost']
+ALLOWED_HOSTS = []
 
 #로그인 로그아웃 성공 시 자동으로 이동할 URL
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/hopecharm/'
 LOGOUT_REDIRECT_URL = '/'
 
 # Application definition
@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hopecharm.apps.HopecharmConfig',
-    'common.apps.CommonConfig',
+    'hopecharm',
+    # 'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -124,7 +124,6 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
