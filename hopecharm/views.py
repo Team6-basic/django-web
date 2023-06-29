@@ -20,7 +20,7 @@ def index(request):
     # 일별 혐오표현 평가지표 
     indicators=[]
     for obj in page_obj:
-        data = Time_Hate.objects.filter(rec_day_id=obj.id).values_list() # 2~10까지 각각 유형, 11이 clean, 12가 id이다.
+        data = Time_Hate.objects.filter(day_id=obj.id).values_list() # 2~10까지 각각 유형, 11이 clean, 12가 id이다.
         data_df = pd.DataFrame(data)
         indicators.append({ 'id':obj.id, 'toxic':np.mean(data_df[11]) })
     
@@ -45,7 +45,7 @@ def index(request):
 def detail(request, board_id):
     user_data = Day_Hate.objects.filter(id=board_id).all()
     #아래 board_df가 일별 총 DB테이블
-    board = Time_Hate.objects.filter(rec_day_id=board_id).values_list()
+    board = Time_Hate.objects.filter(day_id=board_id).values_list()
     board_df = pd.DataFrame(board)
     #레이블용 Datetime 데이터!
     time_labels = board_df[1]
@@ -59,7 +59,6 @@ def detail(request, board_id):
     for col in cols:
         vals = board_df[col].sum()
         datasets.append({col:vals})
-
 
     #월별 혐오표현 통계(라인차트) : 클린 제외
     # 시계열그래프 그리기
@@ -168,7 +167,8 @@ def detail(request, board_id):
     fig_timeline_html = fig.to_html()
 
     #alert용 수치 높은 행만 추출하기!
-
-    
+    alert = pd.DataFrame(data={'type':['여성/가족','남성','성소수자','인종/국적','연령','지역','종교','기타혐오','악플/욕설'],
+'value':[datasets[0][2], datasets[1][3], datasets[2][4], datasets[3][5], datasets[4][6], datasets[5][7], datasets[6][8], datasets[7][9], datasets[8][10]]})
+    top3 = alert.sort_values(by=['value'], axis=0, ascending=False)[:3]['type'].values
     return render(request, 'hopecharm/detail.html', {'board':board_df, 'title':user_data, 'daily_list_pie':datasets, 
-                                                     'fig_timeline_html':fig_timeline_html, 'time_labels':time_labels})
+                                                     'fig_timeline_html':fig_timeline_html, 'time_labels':time_labels, 'top3':top3})
