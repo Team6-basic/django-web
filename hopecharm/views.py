@@ -65,117 +65,123 @@ def detail(request, board_id):
         vals = board_df[col].sum()
         datasets.append({col: vals})
 
-    # 월별 혐오표현 통계(라인차트) : 클린 제외
+       #월별 혐오표현 통계(라인차트) : 클린 제외
     # 시계열그래프 그리기
     fig = go.Figure()
     board_df[1] = pd.to_datetime(board_df[1]).dt.tz_localize(None)
 
     fig.add_trace(
-        go.Scatter(  # 라인 그래프 그리기
-            x=board_df[1],
-            y=board_df['fg_woman_or_family'],
-            name="여성/가족",
-            mode="lines",  # 라인으로 표현
+        go.Scatter(#라인 그래프 그리기
+            x = board_df[1],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[0]],
+            name = '여성/가족',
+            mode = 'lines', # 라인으로 표현
             # line=dict(color="#33CFA5") # 선색상 지정
         )
     )
 
     fig.add_trace(
-        go.Scatter(  # 라인 그래프 그리기
-            x=board_df[1],
-            y=board_df['fg_man'],
-            name="남성",
-            mode="lines",  # 라인으로 표현
+        go.Scatter(#라인 그래프 그리기
+            x = board_df[1],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[1]],
+            name = '남성',
+            mode = 'lines' # 라인으로 표현
         )
     )
     fig.add_trace(
-        go.Scatter(  # 라인 그래프 그리기
-            x=board_df[1],
-            y=board_df['fg_sexual_minority'],
-            name="성소수자",
-            mode="lines",  # 라인으로 표현
+        go.Scatter(#라인 그래프 그리기
+            x = board_df[1],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[2]],
+            name = '성소수자',
+            mode = 'lines' # 라인으로 표현
         )
     )
     fig.add_trace(
-        go.Scatter(  # 라인 그래프 그리기
-            x=board_df[1],
-            y=board_df['fg_race_or_nationality'],
-            name="인종/국적",
-            mode="lines",  # 라인으로 표현
+        go.Scatter(#라인 그래프 그리기
+           x = board_df[1],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[3]],
+            name = '인종/국적',
+            mode = 'lines' # 라인으로 표현
         )
     )
     fig.add_trace(
-        go.Scatter(  # 라인 그래프 그리기
-            x=board_df[1],
-            y=board_df['fg_age'],
-            name="연령",
-            mode="lines",  # 라인으로 표현
+        go.Scatter(#라인 그래프 그리기
+           x = board_df[1],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[4]],
+            name = '연령',
+            mode = 'lines' # 라인으로 표현
         )
     )
     fig.add_trace(
-        go.Scatter(  # 라인 그래프 그리기
-            x=board_df[1],
-            y=board_df['fg_region'],
-            name="지역",
-            mode="lines",  # 라인으로 표현
+        go.Scatter(#라인 그래프 그리기
+            x = board_df[1],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[5]],
+            name = '지역',
+            mode = 'lines' # 라인으로 표현
         )
     )
     fig.add_trace(
-        go.Scatter(  # 라인 그래프 그리기
-            x=board_df[1],
-            y=board_df['fg_religion'],
-            name="종교",
-            mode="lines",  # 라인으로 표현
+        go.Scatter(#라인 그래프 그리기
+            x = board_df[1],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[6]],
+            name = '종교',
+            mode = 'lines' # 라인으로 표현
         )
     )
     fig.add_trace(
-        go.Scatter(  # 라인 그래프 그리기
-            x=board_df[1],
-            y=board_df['fg_other_hate'],
-            name="기타혐오",
-            mode="lines",  # 라인으로 표현
+        go.Scatter(#라인 그래프 그리기
+            x = board_df[1],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[7]],
+            name = '기타혐오',
+            mode = 'lines' # 라인으로 표현
         )
     )
     fig.add_trace(
-        go.Scatter(  # 라인 그래프 그리기
-            x=board_df[1],
-            y=board_df['fg_normal_bad_comments'],
-            name="악플/욕설",
-            mode="lines",  # 라인으로 표현
+        go.Scatter(#라인 그래프 그리기
+           x = board_df[1],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[8]],
+            name = '악플/욕설',
+            mode = 'lines' # 라인으로 표현
         )
     )
 
     fig.update_layout(
         {
-            "title": {
-                "text": "<b>혐오표현 시계열그래프</b>",
-                "x": 0.5,  # x축 위치
-                "y": 0.9,
-                "font": {"size": 30},
+            'title' : {
+                'text' : '<b>혐오표현 시계열그래프</b>',
+                'x' : 0.5, # x축 위치
+                'y' : 0.9,
+                'font' : {
+                    'size' : 30
+                }
             },
-            "showlegend": True,  # 범례표시
-            "xaxis": {
-                "title": "date",  # x축 타이틀 이름
-                "showticklabels": True,  # x축 간격 표시
+            'showlegend' : True, # 범례표시
+            'xaxis' : {
+                'title' : 'date', # x축 타이틀 이름
+                'showticklabels' : True, # x축 간격 표시
                 #'dtick' : 'M1' # x축 간격 범위
             },
-            "yaxis": {"title": "빈도"},
-            "template": "plotly_white",  # 배경 설정
+            'yaxis' : {
+                'title' : '빈도'
+            },
+            'template' : 'plotly_white' # 배경 설정
         }
     )
 
-    # HTML 파일로 변환
+    #HTML 파일로 변환
     fig_timeline_html = fig.to_html()
-    # alert용 수치 높은 행만 추출하기!
 
-    return render(
-        request,
-        "hopecharm/detail.html",
-        {
-            "board": board_df,
-            "title": user_data,
-            "daily_list_pie": datasets,
-            "fig_timeline_html": fig_timeline_html,
-            "time_labels": time_labels,
-        },
-    )
+    #alert용 수치 높은 행만 추출하기!
+    alert = pd.DataFrame(data={'type':['여성/가족','남성','성소수자','인종/국적','연령','지역','종교','기타혐오','악플/욕설'],
+                               'value':[datasets[0][2], datasets[1][3], datasets[2][4], datasets[3][5], datasets[4][6], 
+                                        datasets[5][7], datasets[6][8], datasets[7][9], datasets[8][10]]})
+    top3 = alert.sort_values(by=['value'], axis=0, ascending=False)[:3]['type'].values
+    ##
+    return render(request, 
+                  'hopecharm/detail.html', 
+                  {'board':board_df, 
+                   'title':user_data, 
+                   'daily_list_pie':datasets, 
+                   'fig_timeline_html':fig_timeline_html, 
+                   'time_labels':time_labels, 
+                   'top3':top3})
