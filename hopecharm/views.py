@@ -73,12 +73,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(  # 라인 그래프 그리기
             x=board_df[1],
-            y=board_df[
-                board_df[board_df.columns[2:-2]]
-                .sum()
-                .sort_values(ascending=False)
-                .index[0]
-            ],
+            y=board_df['fg_woman_or_family'],
             name="여성/가족",
             mode="lines",  # 라인으로 표현
             # line=dict(color="#33CFA5") # 선색상 지정
@@ -88,12 +83,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(  # 라인 그래프 그리기
             x=board_df[1],
-            y=board_df[
-                board_df[board_df.columns[2:-2]]
-                .sum()
-                .sort_values(ascending=False)
-                .index[1]
-            ],
+            y=board_df['fg_man'],
             name="남성",
             mode="lines",  # 라인으로 표현
         )
@@ -101,12 +91,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(  # 라인 그래프 그리기
             x=board_df[1],
-            y=board_df[
-                board_df[board_df.columns[2:-2]]
-                .sum()
-                .sort_values(ascending=False)
-                .index[2]
-            ],
+            y=board_df['fg_sexual_minority'],
             name="성소수자",
             mode="lines",  # 라인으로 표현
         )
@@ -114,12 +99,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(  # 라인 그래프 그리기
             x=board_df[1],
-            y=board_df[
-                board_df[board_df.columns[2:-2]]
-                .sum()
-                .sort_values(ascending=False)
-                .index[3]
-            ],
+            y=board_df['fg_race_or_nationality'],
             name="인종/국적",
             mode="lines",  # 라인으로 표현
         )
@@ -127,12 +107,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(  # 라인 그래프 그리기
             x=board_df[1],
-            y=board_df[
-                board_df[board_df.columns[2:-2]]
-                .sum()
-                .sort_values(ascending=False)
-                .index[4]
-            ],
+            y=board_df['fg_age'],
             name="연령",
             mode="lines",  # 라인으로 표현
         )
@@ -140,12 +115,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(  # 라인 그래프 그리기
             x=board_df[1],
-            y=board_df[
-                board_df[board_df.columns[2:-2]]
-                .sum()
-                .sort_values(ascending=False)
-                .index[5]
-            ],
+            y=board_df['fg_region'],
             name="지역",
             mode="lines",  # 라인으로 표현
         )
@@ -153,12 +123,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(  # 라인 그래프 그리기
             x=board_df[1],
-            y=board_df[
-                board_df[board_df.columns[2:-2]]
-                .sum()
-                .sort_values(ascending=False)
-                .index[6]
-            ],
+            y=board_df['fg_religion'],
             name="종교",
             mode="lines",  # 라인으로 표현
         )
@@ -166,12 +131,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(  # 라인 그래프 그리기
             x=board_df[1],
-            y=board_df[
-                board_df[board_df.columns[2:-2]]
-                .sum()
-                .sort_values(ascending=False)
-                .index[7]
-            ],
+            y=board_df['fg_other_hate'],
             name="기타혐오",
             mode="lines",  # 라인으로 표현
         )
@@ -179,12 +139,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(  # 라인 그래프 그리기
             x=board_df[1],
-            y=board_df[
-                board_df[board_df.columns[2:-2]]
-                .sum()
-                .sort_values(ascending=False)
-                .index[8]
-            ],
+            y=board_df['fg_normal_bad_comments'],
             name="악플/욕설",
             mode="lines",  # 라인으로 표현
         )
@@ -211,7 +166,6 @@ def detail(request, board_id):
 
     # HTML 파일로 변환
     fig_timeline_html = fig.to_html()
-
     # alert용 수치 높은 행만 추출하기!
 
     return render(
