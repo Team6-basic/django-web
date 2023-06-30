@@ -1,3 +1,17 @@
+from django.shortcuts import render
+import pandas as pd
+import numpy as np
+from django.core.paginator import Paginator
+from django.views import View
+from .models import Day_Hate, Time_Hate
+import datetime as dt
+
+# plotly 관련
+import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+
 # Create your views here.
 def index(request):
     # 일별 혐오표현 분석 게시판 구성
