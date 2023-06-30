@@ -48,11 +48,9 @@ def index(request):
 
 
 def detail(request, board_id):
-    user_data = Day_Hate.objects.filter(id=board_id).all()
+    user_data = Day_Hate.objects.filter(id=board_id).values('rec_date').get()
     # 아래 board_df가 일별 총 DB테이블
-    board = Time_Hate.objects.filter(
-        rec_datetime__date=user_data.rec_date
-    ).values_list()
+    board = Time_Hate.objects.filter(rec_datetime__date=user_data).values_list()
     board_df = pd.DataFrame(board)
     # 레이블용 Datetime 데이터!
     time_labels = board_df[1]
