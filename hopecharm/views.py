@@ -16,7 +16,7 @@ from plotly.subplots import make_subplots
 def index(request):
     # 일별 혐오표현 분석 게시판 구성
     page = request.GET.get("page", 1)
-    board_list = Day_Hate.objects.filter(user=request.user).order_by("-rec_date")
+    board_list = Day_Hate.objects.filter(user_id=request.user).order_by("-rec_date")
     paginator = Paginator(board_list, 5)
     page_obj = paginator.get_page(page)
     # 일별 혐오표현 평가지표
