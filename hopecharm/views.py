@@ -1,17 +1,3 @@
-from django.shortcuts import render
-import pandas as pd
-import numpy as np
-from django.core.paginator import Paginator
-from django.views import View
-from .models import Day_Hate, Time_Hate
-import datetime as dt
-
-# plotly 관련
-import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-
-
 # Create your views here.
 def index(request):
     # 일별 혐오표현 분석 게시판 구성
@@ -22,9 +8,8 @@ def index(request):
     # 일별 혐오표현 평가지표
     indicators = []
     for obj in page_obj:
-        key = Time_Hate.rec_datetime.dt.date  # Y-M-D 형태로 key 생성
         data = Time_Hate.objects.filter(
-            key=obj.rec_date  # obj.rec_date는 Day_Hate의 rec_date
+            rec_datetime__date=obj.rec_date  # obj.rec_date는 Day_Hate의 rec_date
         ).values_list()  # 2~10까지 각각 유형, 11이 clean, 12가 id이다.
         data_df = pd.DataFrame(data)
         indicators.append({"id": obj.id, "toxic": np.mean(data_df[11])})
@@ -50,10 +35,10 @@ def index(request):
 
 def detail(request, board_id):
     user_data = Day_Hate.objects.filter(id=board_id).all()
-    key = Time_Hate.rec_datetime.dt.date  # Y-M-D 형태로 key 생성
-
     # 아래 board_df가 일별 총 DB테이블
-    board = Time_Hate.objects.filter(key=user_data.rec_date).values_list()
+    board = Time_Hate.objects.filter(
+        rec_datetime__date=user_data.rec_date
+    ).values_list()
     board_df = pd.DataFrame(board)
     # 레이블용 Datetime 데이터!
     time_labels = board_df[1]
