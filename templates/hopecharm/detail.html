@@ -41,8 +41,100 @@
         {% autoescape off %} {{ fig_timeline_html }} {% endautoescape %}
       </div>
     </div>
-    <!-- 3행 : alert 출력(시간, 혐오표현 유형, 키워드 추출 리스트로)-->
-
+    <!-- 3행 : top3 혐오유형에 대한 대응교육 표현 -->
+    <div class="edu_wrap">
+      <div class="edu">
+        <div class="edu_title">
+          <span>오늘의 혐오유형 Top1 : {{top3.0}}</span>
+          <span style='font-size:1.8ex'>혐오유형에 대한 대응교육 정보</span>
+        </div>
+        <table>
+          <tr class='rel_edu'>
+            <td href="#" onClick="window.open('https://amnesty.or.kr/campaign/edu_againsthate', '_blank')">
+              야!너두 할 수 있어!대항표현!</td>
+          </tr>
+          <tr class='rel_edu'>
+            <td href="#"
+              onClick="window.open('https://www.youtube.com/watch?v=O-gOyJaDUJs&ab_channel=%EA%B5%AD%EA%B0%80%EC%9D%B8%EA%B6%8C%EC%9C%84%EC%9B%90%ED%9A%8C', '_blank')">
+              혐오유감</td>
+          </tr>
+          <tr class='rel_edu'>
+            <td href="#" onClick="window.open('https://www.youtube.com/watch?v=SK3m0FkkFQA', '_blank')">
+              민주시민교육 - 혐오차별 편견 예방 교육1</td>
+          </tr>
+          <tr class='rel_edu'>
+            <td href="#" onClick="window.open('https://www.youtube.com/watch?v=MJ8p-8sCxOI&t=0s', '_blank')">
+              민주시민교육 - 혐오차별 편견 예방 교육2</td>
+          </tr>
+          <tr class='rel_edu'>
+            <td href="#" onClick="window.open('https://www.youtube.com/watch?v=MJ8p-8sCxOI&t=0s', '_blank')">
+              민주시민교육 - 혐오차별 편견 예방 교육3</td>
+          </tr>
+        </table>
+      </div>
+      <div class="edu">
+        <div class="edu_title">
+          <span>오늘의 혐오유형 Top2 : {{top3.1}}</span>
+          <span style='font-size:1.8ex'>혐오유형에 대한 대응교육 정보</span>
+        </div>
+        <table>
+          <tr class='rel_edu'>
+            <td href="#"
+              onClick="window.open('https://www.youtube.com/watch?v=RALA49SP7iE&ab_channel=ILAHFY', '_blank')">
+              우리가 알지 못했던 차별</td>
+          </tr>
+          <tr class='rel_edu'>
+            <td href="#" onClick="window.open('https://www.youtube.com/watch?v=fYNO7cVojUM', '_blank')">
+              혐오, 영혼의 살인｜학생인권의 날｜혐오표현</td>
+          </tr>
+          <tr class='rel_edu'>
+            <td href="#" onClick="window.open('https://www.youtube.com/watch?v=0lZ-8zXs1xI', '_blank')">
+              혐오차별 대응-학생편</td>
+          </tr>
+          <tr class='rel_edu'>
+            <td href="#"
+              onClick="window.open('https://jisike.ebs.co.kr/jisike/vodReplayView?siteCd=JE&prodId=352&courseId=BP0PAPB0000000009&stepId=01BP0PAPB0000000009&lectId=60176901', '_blank')">
+              아이, 청소년, 중년, 강아지는 출입 금지</td>
+          </tr>
+          <tr class='rel_edu'>
+            <td href="#"
+              onClick="window.open('https://www.youtube.com/watch?v=RONP0PQhGz8&list=PLYKtfwhjujkJ2EUN_tEh2uTIbXuDdjrYk&index=8', '_blank')">
+              혐오차별대응공모전 4컷만화 수상작 모음</td>
+          </tr>
+        </table>
+      </div>
+      <div class="edu">
+        <div class="edu_title">
+          <span>오늘의 혐오유형 Top3 : {{top3.2}}</span>
+          <span style='font-size:1.8ex'>혐오유형에 대한 대응교육 정보</span>
+        </div>
+        <table>
+          <tr class='rel_edu'>
+            <td href="#" onClick="window.open('https://sangkwon-ssam.tistory.com/83', '_blank')">
+              [학교폭력예방교육] 불편한 것/SNS/욕설/화장(2023ver.)</td>
+          </tr>
+          <tr class='rel_edu'>
+            <td href="#" onClick="window.open('https://www.hani.co.kr/arti/society/schooling/885533.html', '_blank')">
+              교실 속 혐오 표현에 단호히 대처하세요</td>
+          </tr>
+          <tr class='rel_edu'>
+            <td href="#"
+              onClick="window.open('https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=knoc3&logNo=222167975415', '_blank')">
+              혐오표현 바로알기</td>
+          </tr>
+          <tr class='rel_edu'>
+            <td href="#"
+              onClick="window.open('https://edpolicy.kedi.re.kr/frt/boardView.do?strCurMenuId=54&nTbBoardArticleSeq=828977', '_blank')">
+              미국의 혐오 대응 교육 현황</td>
+          </tr>
+          <tr class='rel_edu'>
+            <td href="#"
+              onClick="window.open('https://edpolicy.kedi.re.kr/frt/boardView.do?strCurMenuId=54&nTbBoardArticleSeq=828979', '_blank')">
+              영국의 혐오 대응 교육 현황</td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
   <!-- vis1 chart.js -->
   <script>
