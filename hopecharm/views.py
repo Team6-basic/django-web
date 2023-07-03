@@ -5,6 +5,8 @@ from django.core.paginator import Paginator
 from django.views import View
 from .models import Day_Hate, Time_Hate
 import sqlite3
+import datetime as dt
+import json
 # plotly 관련
 import plotly.express as px
 import plotly.graph_objects as go
@@ -18,34 +20,39 @@ def index(request):
     paginator = Paginator(board_list, 5)
     page_obj = paginator.get_page(page)
     # 일별 혐오표현 평가지표 
-    indicators=[]
+    line_lables = []
+    indicators = []
+    toxic_day = []
     for obj in page_obj:
-        data = Time_Hate.objects.filter(day_id=obj.id).values_list() # 2~10까지 각각 유형, 11이 clean, 12가 id이다.
+        data = Time_Hate.objects.filter(rec_day_id=obj.id).values_list() # 2~10까지 각각 유형, 11이 clean, 12가 id이다.
         data_df = pd.DataFrame(data)
-        indicators.append({ 'id':obj.id, 'toxic':np.mean(data_df[11]) })
-    
+        indicators.append({ 'id':obj.id, 'toxic':np.mean(data_df[11])})
+        line_lables.append(obj.rec_date.strftime('%y-%m-%d'))
+        toxic_day.append(np.mean(data_df[11]))
+
     #월별 혐오표현 통계(파이차트)
     monthly = Time_Hate.objects.all().values_list()
     monthly_df = pd.DataFrame(monthly)
     # 결과 처리
-    datasets = [] # 딕셔너리 형태로 만들기
+    datasets = [] #파이차트 딕셔너리 형태로 만들기 
     cols = monthly_df.columns[2:11]
     for col in cols:
         vals = monthly_df[col].sum()
         datasets.append({col:vals})
 
-
     context = { 'board_list':page_obj,
                 'indicator':indicators,
                 'monthly_df':datasets,
+                'line_lables':line_lables,
+                'toxic_day':toxic_day,
                 }
 
     return render(request, 'hopecharm/main.html', context)
 
 def detail(request, board_id):
-    user_data = Day_Hate.objects.filter(id=board_id).all()
+    user_data = Day_Hate.objects.filter(id=board_id).values('rec_date').get()
     #아래 board_df가 일별 총 DB테이블
-    board = Time_Hate.objects.filter(day_id=board_id).values_list()
+    board = Time_Hate.objects.filter(rec_datetime__date=user_data['rec_date'].isoformat()).values_list()
     board_df = pd.DataFrame(board)
     #레이블용 Datetime 데이터!
     time_labels = board_df[1]
@@ -68,7 +75,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(#라인 그래프 그리기
             x = board_df[1],
-            y = board_df[board_df[board_df.columns[2:-2]].sum().sort_values(ascending=False).index[0]],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[0]],
             name = '여성/가족',
             mode = 'lines', # 라인으로 표현
             # line=dict(color="#33CFA5") # 선색상 지정
@@ -78,7 +85,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(#라인 그래프 그리기
             x = board_df[1],
-            y = board_df[board_df[board_df.columns[2:-2]].sum().sort_values(ascending=False).index[1]],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[1]],
             name = '남성',
             mode = 'lines' # 라인으로 표현
         )
@@ -86,7 +93,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(#라인 그래프 그리기
             x = board_df[1],
-            y = board_df[board_df[board_df.columns[2:-2]].sum().sort_values(ascending=False).index[2]],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[2]],
             name = '성소수자',
             mode = 'lines' # 라인으로 표현
         )
@@ -94,7 +101,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(#라인 그래프 그리기
            x = board_df[1],
-            y = board_df[board_df[board_df.columns[2:-2]].sum().sort_values(ascending=False).index[3]],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[3]],
             name = '인종/국적',
             mode = 'lines' # 라인으로 표현
         )
@@ -102,7 +109,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(#라인 그래프 그리기
            x = board_df[1],
-            y = board_df[board_df[board_df.columns[2:-2]].sum().sort_values(ascending=False).index[4]],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[4]],
             name = '연령',
             mode = 'lines' # 라인으로 표현
         )
@@ -110,7 +117,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(#라인 그래프 그리기
             x = board_df[1],
-            y = board_df[board_df[board_df.columns[2:-2]].sum().sort_values(ascending=False).index[5]],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[5]],
             name = '지역',
             mode = 'lines' # 라인으로 표현
         )
@@ -118,7 +125,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(#라인 그래프 그리기
             x = board_df[1],
-            y = board_df[board_df[board_df.columns[2:-2]].sum().sort_values(ascending=False).index[6]],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[6]],
             name = '종교',
             mode = 'lines' # 라인으로 표현
         )
@@ -126,7 +133,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(#라인 그래프 그리기
             x = board_df[1],
-            y = board_df[board_df[board_df.columns[2:-2]].sum().sort_values(ascending=False).index[7]],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[7]],
             name = '기타혐오',
             mode = 'lines' # 라인으로 표현
         )
@@ -134,7 +141,7 @@ def detail(request, board_id):
     fig.add_trace(
         go.Scatter(#라인 그래프 그리기
            x = board_df[1],
-            y = board_df[board_df[board_df.columns[2:-2]].sum().sort_values(ascending=False).index[8]],
+            y = board_df[board_df[board_df.columns[2:-3]].sum().sort_values(ascending=False).index[8]],
             name = '악플/욕설',
             mode = 'lines' # 라인으로 표현
         )
@@ -168,7 +175,11 @@ def detail(request, board_id):
 
     #alert용 수치 높은 행만 추출하기!
     alert = pd.DataFrame(data={'type':['여성/가족','남성','성소수자','인종/국적','연령','지역','종교','기타혐오','악플/욕설'],
-'value':[datasets[0][2], datasets[1][3], datasets[2][4], datasets[3][5], datasets[4][6], datasets[5][7], datasets[6][8], datasets[7][9], datasets[8][10]]})
+                            'value':[datasets[0][2], datasets[1][3], datasets[2][4], datasets[3][5], datasets[4][6], 
+                            datasets[5][7], datasets[6][8], datasets[7][9], datasets[8][10]]})
+    
     top3 = alert.sort_values(by=['value'], axis=0, ascending=False)[:3]['type'].values
+
     return render(request, 'hopecharm/detail.html', {'board':board_df, 'title':user_data, 'daily_list_pie':datasets, 
-                                                     'fig_timeline_html':fig_timeline_html, 'time_labels':time_labels, 'top3':top3})
+                                                     'fig_timeline_html':fig_timeline_html, 'time_labels':time_labels, 
+                                                     'top3':top3})

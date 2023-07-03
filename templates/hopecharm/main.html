@@ -37,7 +37,13 @@
       <div class="data_vis" id="vis1">  
         <div class="graph_wrap">
           <div id='mc'><canvas id="myChart"></canvas></div>         
-          <div id='mc2'><canvas id="myChart2"></canvas></div>
+          <div id='mc2'>
+            <canvas id="myChart2" style="height:60%; width:95%"></canvas>
+            <div id="indic">
+              <b>일별 'Clean'정도</b>의 수치는 0~1.0까지로, 그 정도에 따라 3단계의 Toxic으로 분류됩니다. 초록은 Clean정도가 <b>0.93</b> 이상, 주황은 <b>0.93~0.87</b>까지, 빨강은 <b>0.87</b> 이하를 뜻합니다.
+              <br><b>위 기준</b>은 일별 수치를 근거로 설정되었습니다.
+            </div>
+          </div>
         </div>
       </div>
       <!-- vis1 chart.js -->
@@ -75,54 +81,36 @@
                 }
             });
 
-            var ctx_2 = document.getElementById("myChart2");
-            var data_2 = {
-              datasets: [{
-                label:'혐오표현 상황별 통계',
-                data: [{x:46.7, y:'오프라인(정규수업, 방과후 수업 등)'},
-                {x:35.5, y:'온라인(SNS, 게임, 단톡방 등)'},
-                {x:17.8, y:'기타(친구들과 만남, 쉬는 시간 등)'}],
-                backgroundColor: ['#3c8dbc','#f56954','#f39c12'],
-              }]
-            };
-            var mybarChart_2 = new Chart(ctx_2, {
-                type: 'bar',
-                data: data_2,
-                options: {
-                  layout:{padding:20},
-                  indexAxis:'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins:{
-                      title:{display:true,text:'혐오표현 사용 상황별 통계'},
-                      legend:{
-                        labels:{
-                          display:false
-                        }
-                      }
-                    },
-                    scales:{
-                      x:{
-                        ticks:{
-                          callback:function(value,index,ticks){
-                            return value + '%';
-                          }
-                        }
-                      },
-                      y:{
-                        ticks:{
-                          callback:function(value,index,ticks){
-                            const bar_key=['오프라인','온라인','기타']
-                            return bar_key[index];
-                          }
-                        }
-                      }
-                    }
-                }
-            });
-        });
+            var line_lable = {{line_lables|safe}} ;
+            var toxicity = {{toxic_day|safe}};
 
-    </script>
+            var ctx_2 = document.getElementById("myChart2");
+            var mylineChart2 = new Chart(ctx_2, {
+              type: 'line',
+              data: {
+                labels: line_lable,
+                datasets: [{
+                  label: "월간 일별 'Clean'정도 통계",
+                  data: toxicity,
+                  borderWidth: 2,
+                  pointRadius: 5,
+                }],
+              },
+              options: {
+                responsive: false,
+                plugins:{
+                  title:{display:true,text:'월간 혐오표현 유형별 통계'},
+                  legend:{
+                    labels:{
+                      boxWidth:40,
+                      boxHeight:5,
+                    }
+                  }
+                },
+              },
+          });
+        });
+      </script>
 
       <!-- 밑에 데이터행-->
     <div class="data_vis" id="vis2">
