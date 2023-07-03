@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 {% load hopecharm_filter %}
 {% block content %}
-  <nav class="navbar">
+<nav class="navbar">
     <div class="navwrap">
-      <div class="nav_logo_wrap" href="{% url 'hopecharm:index' %}">
+      <div class="nav_logo_wrap">
+        <a class="redir-link" href="{% url 'hopecharm:index' %}">
         <div class="nav_logo_image"></div>
         <span class="nav_logo_text">희망참</span>
+        </a>
       </div>
+
 
       <div class="nav_login">
         <ul>
@@ -38,11 +41,7 @@
         <div class="graph_wrap">
           <div id='mc'><canvas id="myChart"></canvas></div>         
           <div id='mc2'>
-            <canvas id="myChart2" style="height:60%; width:95%"></canvas>
-            <div id="indic">
-              <b>일별 'Clean'정도</b>의 수치는 0~1.0까지로, 그 정도에 따라 3단계의 Toxic으로 분류됩니다. 초록은 Clean정도가 <b>0.93</b> 이상, 주황은 <b>0.93~0.87</b>까지, 빨강은 <b>0.87</b> 이하를 뜻합니다.
-              <br><b>위 기준</b>은 일별 수치를 근거로 설정되었습니다.
-            </div>
+            <canvas id="myChart2" style="height:30ex; width:100%"></canvas>
           </div>
         </div>
       </div>

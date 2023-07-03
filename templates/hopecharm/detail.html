@@ -3,9 +3,11 @@
 <body>
 <nav class="navbar">
     <div class="navwrap">
-      <div class="nav_logo_wrap" href="#" onClick="{% url 'hopecharm:index' %}', '_blank')">
+      <div class="nav_logo_wrap">
+        <a class="redir-link" href="{% url 'hopecharm:index' %}">
         <div class="nav_logo_image"></div>
         <span class="nav_logo_text">희망참</span>
+        </a>
       </div>
 
       <div class="nav_login">
