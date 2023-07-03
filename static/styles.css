@@ -52,7 +52,7 @@
 	height: 448px;
 	width: 500px;
 	border-radius: 8px;
-	top: 40ex;
+	top: 30ex;
 	/* Colors / White */
 	background: #FFFFFF;
 	/* Shadow */
@@ -232,24 +232,6 @@
 	left:-1.5ex;
 	box-shadow: 0px 4px 4px rgba(51, 51, 51, 0.06), 0px 4px 16px rgba(51, 51, 51, 0.1);
   }
-  .news_title{
-	position:absolute;
-	display:flex;
-	flex-direction: row;
-	align-items:center;
-	justify-content: center;
-	width:100%;
-	height:6ex;
-	border-radius:20px 20px 0px 0px;
-	background-color:#e0f2fe;
-	font-size: 2.3ex;
-	font-family: 'Montserrat';
-    font-style: normal;
-	color: #0c4a6e;
-	font-weight: 800;
-	margin-bottom:0.5ex;
-	letter-spacing: -0.02em;  
-}
   .outer {
 	width:100%;	
 	height:100%;
@@ -306,15 +288,16 @@
   }
   .area{
 	position: relative;
-	font-weight:800;
-	top:20%;
-	right:2%;
 	padding:0.5px 5.5px;
 	width:27ex;
 	height:15ex;
 	background-color:#fff;
-	opacity: 0.7;
+	opacity: 0.6;
 	border-radius: 20px;
+  }
+  .news_title{
+	font-size: medium;
+	font-weight: 900;
   }
   .inner_line{
 	margin : -1.2ex 0ex;
@@ -679,8 +662,7 @@ ul.pagination{
 margin-top:2ex;
 width:80%;
 display: flex;
-flex-direction:row;	
-box-shadow: 0px 4px 4px rgba(51, 51, 51, 0.06), 0px 4px 16px rgba(51, 51, 51, 0.1);
+flex-direction:row;	box-shadow: 0px 4px 4px rgba(51, 51, 51, 0.06), 0px 4px 16px rgba(51, 51, 51, 0.1);
 border-radius:18px;
 justify-content: center;
 }
@@ -697,45 +679,5 @@ flex-direction:row;
 justify-content: space-between;
 }
 .edu{
-width:32%;
-/* Auto layout */
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 12.13px;
-isolation: isolate;
-background: #FAFAFA;
-border-radius:18px;
-box-shadow: 0px 4px 4px rgba(51, 51, 51, 0.06), 0px 4px 16px rgba(51, 51, 51, 0.1);
+width:43ex;
 }
-.rel_edu{
-	box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    gap: 40px;
-    position: relative;
-    width: 40ex;
-    height: 4.8ex;
-    background: #FFFFFF;
-    border: 0.758076px solid #E5E5E5;
-    border-radius: 9.09691px;
-	margin-bottom:1ex;
-}
-.edu_title{
-	display:flex;
-	flex-direction: column;
-	align-items:center;
-	justify-content: center;
-	width:100%;
-	height:6ex;
-	border-radius:20px 20px 0px 0px;
-	background-color:#e0f2fe;
-	font-size: 2.3ex;
-	font-family: 'Montserrat';
-    font-style: normal;
-	color: #0c4a6e;
-	font-weight: 800;
-	margin-bottom:0.5ex;
-	letter-spacing: -0.02em;
-  }

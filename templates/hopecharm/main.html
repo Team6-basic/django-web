@@ -27,7 +27,7 @@
     <div class="vis_wrap">
       <div class="user_text">
         {% if user.is_authenticated %}
-        <span href="{% url 'logout' %}">{{user.username}}님의 혐오표현 지표 현황은 다음과 같습니다.</span>
+        <span href="{% url 'logout' %}">국내 혐오표현 지표 현황은 다음과 같습니다.</span>
         {% else %}
         <span href="{% url 'login'  %}">로그인 후 이용해주세요.</span>
         {% endif %}
@@ -126,12 +126,10 @@
 
       <!-- 밑에 데이터행-->
     <div class="data_vis" id="vis2">
+      
       <!-- 뉴스 -->
       <div id="news_wrap">
-        <div class="outer">
-          <div class="news_title">
-            <span>국내 혐오표현 연구현황 뉴스레터</span>
-          </div>
+        <div class="outer" >
           <div class="inner-list">
             <div class="inner" id="news1">
               <div class="area" href="#" onClick="window.open('https://webzine-serii.re.kr/%ED%98%90%EC%98%A4-%ED%91%9C%ED%98%84-%EC%99%9C-%EB%AC%B8%EC%A0%9C%EC%9D%B4%EA%B3%A0-%EC%96%B4%EB%96%BB%EA%B2%8C-%EA%B7%B9%EB%B3%B5%ED%95%A0%EA%B9%8C/', '_blank')">
@@ -339,3 +337,4 @@
 </script>
 
 {% endblock  %}
+
