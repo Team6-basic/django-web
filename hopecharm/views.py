@@ -4,19 +4,19 @@ import numpy as np
 from django.core.paginator import Paginator
 from django.views import View
 from .models import Day_Hate, Time_Hate
-import sqlite3
 import datetime as dt
-import json
+
 # plotly 관련
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
+
 # Create your views here.
 def index(request):
     # 일별 혐오표현 분석 게시판 구성
     page = request.GET.get('page', 1)
-    board_list = Day_Hate.objects.filter(user=request.user).order_by('-rec_date')
+    board_list = Day_Hate.objects.filter(user_id=request.user.id).order_by('-rec_date')
     paginator = Paginator(board_list, 5)
     page_obj = paginator.get_page(page)
     # 일별 혐오표현 평가지표 
@@ -24,7 +24,7 @@ def index(request):
     indicators = []
     toxic_day = []
     for obj in page_obj:
-        data = Time_Hate.objects.filter(rec_day_id=obj.id).values_list() # 2~10까지 각각 유형, 11이 clean, 12가 id이다.
+        data = Time_Hate.objects.filter(rec_datetime__date=obj.rec_date).values_list() # 2~10까지 각각 유형, 11이 clean, 12가 id이다.
         data_df = pd.DataFrame(data)
         indicators.append({ 'id':obj.id, 'toxic':np.mean(data_df[11])})
         line_lables.append(obj.rec_date.strftime('%y-%m-%d'))
@@ -49,25 +49,26 @@ def index(request):
 
     return render(request, 'hopecharm/main.html', context)
 
+
 def detail(request, board_id):
     user_data = Day_Hate.objects.filter(id=board_id).values('rec_date').get()
-    #아래 board_df가 일별 총 DB테이블
+    # 아래 board_df가 일별 총 DB테이블
     board = Time_Hate.objects.filter(rec_datetime__date=user_data['rec_date'].isoformat()).values_list()
     board_df = pd.DataFrame(board)
-    #레이블용 Datetime 데이터!
+    # 레이블용 Datetime 데이터!
     time_labels = board_df[1]
     ### 여기다가 alert 이벤트 넣을거!
-    
+
     ### 여기다가 그래프 요소 넣을거!!
-    #일벌 혐오표현 통계(파이차트) : 클린포함
+    # 일벌 혐오표현 통계(파이차트) : 클린포함
     # 결과 처리
-    datasets = [] # 딕셔너리 형태로 만들기
+    datasets = []  # 딕셔너리 형태로 만들기
     cols = board_df.columns[2:12]
     for col in cols:
         vals = board_df[col].sum()
-        datasets.append({col:vals})
+        datasets.append({col: vals})
 
-    #월별 혐오표현 통계(라인차트) : 클린 제외
+       #월별 혐오표현 통계(라인차트) : 클린 제외
     # 시계열그래프 그리기
     fig = go.Figure()
     board_df[1] = pd.to_datetime(board_df[1]).dt.tz_localize(None)
@@ -175,11 +176,15 @@ def detail(request, board_id):
 
     #alert용 수치 높은 행만 추출하기!
     alert = pd.DataFrame(data={'type':['여성/가족','남성','성소수자','인종/국적','연령','지역','종교','기타혐오','악플/욕설'],
-                            'value':[datasets[0][2], datasets[1][3], datasets[2][4], datasets[3][5], datasets[4][6], 
-                            datasets[5][7], datasets[6][8], datasets[7][9], datasets[8][10]]})
-    
+                               'value':[datasets[0][2], datasets[1][3], datasets[2][4], datasets[3][5], datasets[4][6], 
+                                        datasets[5][7], datasets[6][8], datasets[7][9], datasets[8][10]]})
     top3 = alert.sort_values(by=['value'], axis=0, ascending=False)[:3]['type'].values
-
-    return render(request, 'hopecharm/detail.html', {'board':board_df, 'title':user_data, 'daily_list_pie':datasets, 
-                                                     'fig_timeline_html':fig_timeline_html, 'time_labels':time_labels, 
-                                                     'top3':top3})
+    ##
+    return render(request, 
+                  'hopecharm/detail.html', 
+                  {'board':board_df, 
+                   'title':user_data, 
+                   'daily_list_pie':datasets, 
+                   'fig_timeline_html':fig_timeline_html, 
+                   'time_labels':time_labels, 
+                   'top3':top3})
